@@ -22,8 +22,7 @@
     "nsis": {
       "installerIcon": "src/icon.ico",
       "uninstallerIcon": "src/icon.ico",
-      "uninstallDisplayName": "CPU Monitor",
-      "license": "license.txt",
+      "uninstallDisplayName": "Resource Monitor",
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     }
@@ -38,7 +37,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "cool_app"
+            "name": "resource-monitor"
           }
         },
         {
