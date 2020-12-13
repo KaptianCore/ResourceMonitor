@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const os = require('os-utils');
 const path = require('path');
+const si = require("systeminformation")
 const moment = require("moment")
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -11,8 +12,8 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
+    width: 900,
+    height: 300,
     icon: __dirname + '/icon.ico',
     webPreferences: {
       nodeIntegration: true
@@ -21,15 +22,32 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
+  mainWindow.setMenuBarVisibility(false)
   setInterval(() => {
-    // var uptime = `${hours} hrs ${minutes} mins ${seconds} secs`;
-    os.cpuUsage(function(v){
-      
-      mainWindow.webContents.send('cpu',v*100);
-      mainWindow.webContents.send('mem',os.freememPercentage()*100);
-      mainWindow.webContents.send('total-mem',os.totalmem()/1024);
-      mainWindow.webContents.send('uptime', os.sysUptime()/60);
+    si.cpu(async function(v){
+      var rawUptime = os.sysUptime()
+      // var seconds = moment.duration(rawUptime).seconds();
+      // var minutes = moment.duration(rawUptime).minutes();
+      // var hours = Math.trunc(moment.duration(rawUptime).asHours());
+      // var uptime = `${hours} hrs ${minutes} mins ${seconds} secs`;
+      // console.log(rawUptime)
+      // let cpuTemp = await si.cpuTemperature()
+      let cpuLoad = await si.currentLoad()
+      let proc = await si.processes()
+      let Mem = await si.mem()
+      let network = await si.networkInterfaces()
+      // console.log(network)
+      // console.log(cpuTemp)
+      // console.log(cpuSpeed)
+      // mainWindow.webContents.send('cpu',v.speed);
+      // console.log(v.speed)
+      mainWindow.webContents.send('cpu',cpuLoad.currentload);
+      mainWindow.webContents.send('mem',Mem.free/1024/1024/1024);
+      // console.log(si.mem().free)
+      mainWindow.webContents.send('run-proc',proc.all);
+      mainWindow.webContents.send('run-proc',network[0]);
+      mainWindow.webContents.send('mem-used',Mem.used/1024/1024/1024);
+      mainWindow.webContents.send('uptime',rawUptime/60/60);
     });
   },1000);
 

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>CPU Monitor</title>
+    <title>Resource Monitor</title>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
@@ -11,17 +11,25 @@
       <span id="cpu">-</span>
     </div>
     <div class="box">
-      <span class="label">Free Mem (%)</span>
+      <span class="label">Free Memory (GB)</span>
       <span id="mem">-</span>
     </div>
     <div class="box">
-      <span class="label">Total Mem (GB)</span>
-      <span id="total-mem">-</span>
+      <span class="label">Memory Used (GB)</span>
+      <span id="mem-used">-</span>
     </div>
         <div class="box">
-      <span class="label">System Uptime (seconds)</span>
+      <span class="label">App Uptime (minutes)</span>
       <span id="uptime">-</span>
     </div>
+    <div class="box">
+      <span class="label">Running Processes</span>
+      <span id="run-proc">-</span>
+    </div>
+    <!-- <div class="box">
+      <span class="label">Network Speed (Mb/s)</span>
+      <span id="net-speed">-</span>
+    </div> -->
 
     <script>
       const electron = require('electron');
@@ -30,11 +38,20 @@
       ipcRenderer.on('cpu',(event,data) => {
         document.getElementById('cpu').innerHTML = data.toFixed(2);
       });
+      // ipcRenderer.on('net-speed',(event,data) => {
+      //   document.getElementById('net-speed').innerHTML = data.toFixed(2);
+      // });
+      ipcRenderer.on('run-proc',(event,data) => {
+        document.getElementById('run-proc').innerHTML = data.toFixed(0);
+      });
       ipcRenderer.on('mem',(event,data) => {
         document.getElementById('mem').innerHTML = data.toFixed(2);
       });
-      ipcRenderer.on('total-mem',(event,data) => {
-        document.getElementById('total-mem').innerHTML = data.toFixed(2);
+      ipcRenderer.on('mem-used',(event,data) => {
+        document.getElementById('mem-used').innerHTML = data.toFixed(2);
+      });
+      ipcRenderer.on('uptime',(event,data) => {
+        document.getElementById('uptime').innerHTML = data.toFixed(2);
       });
     </script>
   </body>

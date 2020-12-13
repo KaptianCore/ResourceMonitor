@@ -28,4 +28,6 @@ body {
   font-size: 20px;
   font-weight: 600;
   color:#efa;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
 }
