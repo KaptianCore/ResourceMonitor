@@ -10,16 +10,14 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
+    "release": "build",
     "build-installer": "electron-builder"
   },
   "build": {
     "appId": "resource-monitor",
     "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "src/icon.ico",
-      "requestedExecutionLevel": "requireAdministrator"
+      "publish": ["github", "bintray"],
+      "icon": "src/icon.ico"
     },
     "nsis": {
       "installerIcon": "src/icon.ico",
