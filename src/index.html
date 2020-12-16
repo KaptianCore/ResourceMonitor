@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
+    <center>
     <div class="box">
       <span class="label">CPU (%)</span>
       <span id="cpu">-</span>
@@ -19,13 +20,18 @@
       <span id="mem-used">-</span>
     </div>
         <div class="box">
-      <span class="label">App Uptime (minutes)</span>
+      <span class="label">App Uptime (hours)</span>
       <span id="uptime">-</span>
     </div>
     <div class="box">
       <span class="label">Running Processes</span>
       <span id="run-proc">-</span>
     </div>
+    <div class="box">
+      <span class="label">Network Latency (ms)</span>
+      <span id="network">-</span>
+    </div>
+  </center>
     <!-- <div class="box">
       <span class="label">Network Speed (Mb/s)</span>
       <span id="net-speed">-</span>
@@ -49,6 +55,9 @@
       });
       ipcRenderer.on('mem-used',(event,data) => {
         document.getElementById('mem-used').innerHTML = data.toFixed(2);
+      });
+      ipcRenderer.on('network',(event,data) => {
+        document.getElementById('network').innerHTML = data.toFixed(0);
       });
       ipcRenderer.on('uptime',(event,data) => {
         document.getElementById('uptime').innerHTML = data.toFixed(2);

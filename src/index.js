@@ -4,6 +4,7 @@ const path = require('path');
 const si = require("systeminformation")
 const moment = require("moment")
 
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -12,20 +13,20 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 300,
+    width: 200,
+    height: 490,
     icon: __dirname + '/icon.ico',
     webPreferences: {
       nodeIntegration: true
     }
   });
-
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.setMenuBarVisibility(false)
   setInterval(() => {
     si.cpu(async function(v){
       var rawUptime = os.sysUptime()
+      
       // var seconds = moment.duration(rawUptime).seconds();
       // var minutes = moment.duration(rawUptime).minutes();
       // var hours = Math.trunc(moment.duration(rawUptime).asHours());
@@ -35,7 +36,8 @@ const createWindow = () => {
       let cpuLoad = await si.currentLoad()
       let proc = await si.processes()
       let Mem = await si.mem()
-      let network = await si.networkInterfaces()
+      let network = await si.networkStats()
+      let internet = network[0]
       // console.log(network)
       // console.log(cpuTemp)
       // console.log(cpuSpeed)
@@ -45,7 +47,7 @@ const createWindow = () => {
       mainWindow.webContents.send('mem',Mem.free/1024/1024/1024);
       // console.log(si.mem().free)
       mainWindow.webContents.send('run-proc',proc.all);
-      mainWindow.webContents.send('run-proc',network[0]);
+      mainWindow.webContents.send('network',internet.ms);
       mainWindow.webContents.send('mem-used',Mem.used/1024/1024/1024);
       mainWindow.webContents.send('uptime',rawUptime/60/60);
     });

@@ -16,7 +16,10 @@
   "build": {
     "appId": "resource-monitor",
     "win": {
-      "publish": ["github", "bintray"],
+      "publish": [
+        "github",
+        "bintray"
+      ],
       "icon": "src/icon.ico"
     },
     "nsis": {
